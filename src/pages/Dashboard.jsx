@@ -2,7 +2,7 @@ import React from 'react';
 import { useScoring } from '../context/ScoringContext';
 import { COMPARSAS } from '../constants/data';
 import { motion } from 'framer-motion';
-import { Trophy, TrendingUp, AlertCircle, Radio } from 'lucide-react';
+import { Trophy, TrendingUp, AlertCircle, Radio, BookOpen } from 'lucide-react';
 
 const StatCard = ({ title, value, comparsa }) => (
   <div className={`p-4 rounded-xl border border-white/5 ${comparsa.bg} backdrop-blur-sm`}>
@@ -183,6 +183,60 @@ const Dashboard = () => {
                 )}
             </div>
        </div>
+
+       {/* Manual del Jurado 2026 */}
+       <motion.div 
+         initial={{ opacity: 0, y: 20 }}
+         animate={{ opacity: 1, y: 0 }}
+         transition={{ delay: 0.4 }}
+         className="mt-12 max-w-4xl mx-auto"
+       >
+         <a 
+           href="/manual-jurado.html" 
+           target="_blank"
+           rel="noopener noreferrer"
+           className="block glass-card rounded-2xl overflow-hidden border-2 border-purple-500/30 hover:border-purple-500 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/20"
+         >
+           <div className="bg-gradient-to-r from-purple-600/20 to-purple-500/10 px-8 py-6 flex items-center justify-between gap-6">
+             <div className="flex items-center gap-4">
+               <div className="bg-purple-500/20 p-4 rounded-xl border border-purple-500/30">
+                 <BookOpen className="text-purple-400" size={32} />
+               </div>
+               <div>
+                 <h3 className="text-2xl font-bold text-white mb-1">Manual del Jurado 2026</h3>
+                 <p className="text-purple-200 text-sm">Obligaciones, criterios técnicos y guía completa de calificación</p>
+               </div>
+             </div>
+             <div className="hidden md:flex items-center gap-2 bg-purple-500 text-white px-6 py-3 rounded-xl font-bold text-sm uppercase tracking-wide">
+               <span>Ver Manual</span>
+               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                 <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+               </svg>
+             </div>
+           </div>
+           
+           <div className="px-8 py-6 bg-slate-800/50 border-t border-purple-500/10">
+             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+               <div>
+                 <p className="text-xs text-slate-400 uppercase mb-1">Obligaciones</p>
+                 <p className="text-lg font-bold text-purple-400">6 Críticas</p>
+               </div>
+               <div>
+                 <p className="text-xs text-slate-400 uppercase mb-1">Rubros</p>
+                 <p className="text-lg font-bold text-purple-400">9 Categorías</p>
+               </div>
+               <div>
+                 <p className="text-xs text-slate-400 uppercase mb-1">Rango</p>
+                 <p className="text-lg font-bold text-purple-400">5.0 - 10.0</p>
+               </div>
+               <div>
+                 <p className="text-xs text-slate-400 uppercase mb-1">Tips</p>
+                 <p className="text-lg font-bold text-purple-400">Guía Técnica</p>
+               </div>
+             </div>
+           </div>
+         </a>
+       </motion.div>
 
     </div>
   );
