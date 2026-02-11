@@ -1,0 +1,151 @@
+// Sistema de Escrutinio - Carnaval 2026
+// Manual del Jurado: Rango 5.0 a 10.0 con justificación obligatoria para notas < 10
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ==================== MODELOS ====================
+
+// Usuarios del sistema (Jurados, Admins, Veedores)
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String   // Hash bcrypt
+  role      Role     @default(JURADO)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relaciones
+  scores     Score[]
+  auditLogs  AuditLog[]
+  sanciones  Sancion[]
+
+  @@index([email])
+  @@index([role])
+}
+
+// Comparsas participantes
+model Comparsa {
+  id        String   @id // 'carumbe', 'zumzum', 'tradicion', 'lindaflor'
+  name      String   @unique
+  color     String   // Clase Tailwind para UI
+  bg        String   // Clase Tailwind background
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  // Relaciones
+  scores     Score[]
+  sanciones  Sancion[]
+
+  @@index([name])
+}
+
+// Rubros de evaluación (9 rubros según Manual 2026)
+model Rubro {
+  id           String   @id // 'alegorias', 'baianas', 'bateria', etc.
+  name         String   @unique
+  guiaTecnica  String   @db.Text // Guía técnica del Manual 2026
+  orden        Int      // Orden de presentación
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  // Relaciones
+  scores Score[]
+
+  @@index([orden])
+}
+
+// Notas cargadas por los jurados
+model Score {
+  id             String   @id @default(cuid())
+  noche          String   // 'noche1' o 'noche2'
+  
+  // Referencias
+  comparsaId     String
+  comparsa       Comparsa @relation(fields: [comparsaId], references: [id])
+  
+  rubroId        String
+  rubro          Rubro    @relation(fields: [rubroId], references: [id])
+  
+  judgeId        String
+  judge          User     @relation(fields: [judgeId], references: [id])
+  
+  // Datos de la nota
+  score          Float    // Rango: 5.0 a 10.0 (Manual 2026)
+  justification  String?  @db.Text // Obligatorio si score < 10.0
+  
+  // Seguridad
+  hash           String   // Hash encriptado para validación
+  ipAddress      String?  // IP desde donde se cargó
+  
+  // Timestamps
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Constraints
+  @@unique([noche, comparsaId, rubroId, judgeId], name: "unique_vote")
+  @@index([comparsaId])
+  @@index([rubroId])
+  @@index([judgeId])
+  @@index([noche])
+}
+
+// Sanciones Administrativas (Manual 2026)
+model Sancion {
+  id          String   @id @default(cuid())
+  
+  // Referencias
+  comparsaId  String
+  comparsa    Comparsa @relation(fields: [comparsaId], references: [id])
+  
+  adminId     String
+  admin       User     @relation(fields: [adminId], references: [id])
+  
+  // Datos de la sanción
+  puntos      Float    // Puntos a descontar del puntaje total
+  motivo      String   @db.Text
+  noche       String   // 'noche1' o 'noche2'
+  
+  // Timestamps
+  createdAt   DateTime @default(now())
+  
+  @@index([comparsaId])
+  @@index([noche])
+}
+
+// Log de auditoría para trazabilidad
+model AuditLog {
+  id        String   @id @default(cuid())
+  
+  // Referencias
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  
+  // Datos del evento
+  action    String   // 'SUBMIT_SCORE', 'ADD_SANCION', 'LOGIN', 'DELETE_SCORE', etc.
+  details   String   @db.Text
+  ipAddress String?
+  userAgent String?
+  
+  // Timestamps
+  timestamp DateTime @default(now())
+
+  @@index([action])
+  @@index([timestamp])
+  @@index([userId])
+}
+
+// ==================== ENUMS ====================
+
+enum Role {
+  ADMIN
+  JURADO
+  VEEDOR
+}
