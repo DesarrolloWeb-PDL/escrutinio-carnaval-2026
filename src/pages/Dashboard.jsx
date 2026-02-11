@@ -192,7 +192,7 @@ const Dashboard = () => {
          className="mt-12 max-w-4xl mx-auto"
        >
          <a 
-           href="/manual-jurado.html" 
+           href="/escrutinio-carnaval-2026/manual-jurado.html" 
            target="_blank"
            rel="noopener noreferrer"
            className="block glass-card rounded-2xl overflow-hidden border-2 border-purple-500/30 hover:border-purple-500 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/20"
