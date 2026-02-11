@@ -4,7 +4,7 @@ const ScoringContext = createContext();
 
 const initialState = {
   scores: [], // { id, comparsaId, rubroId, score, justification, timestamp, judgeId }
-  user: null, // { id, name, role }
+  user: JSON.parse(localStorage.getItem('user')) || null, // { id, name, role }
   auditLog: [], // { id, action, user, timestamp, details }
   isLocked: false // Final lock by admin
 };
@@ -56,11 +56,13 @@ export const ScoringProvider = ({ children }) => {
   const login = (userData) => {
     // Simular Token JWT
     localStorage.setItem('token', 'mock-jwt-token-xyz');
+    localStorage.setItem('user', JSON.stringify(userData));
     dispatch({ type: 'LOGIN', payload: userData });
   };
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     dispatch({ type: 'LOGOUT' });
   };
 
