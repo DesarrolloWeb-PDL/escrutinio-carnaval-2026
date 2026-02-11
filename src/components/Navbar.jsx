@@ -14,12 +14,12 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 w-full z-50 glass-card px-6 py-4 flex justify-between items-center border-b border-white/10">
+    <nav className="fixed top-0 w-full z-50 glass-card px-6 py-4 flex justify-between items-center border-b border-white/10 group">
       <div className="flex items-center gap-3">
         <div className="bg-yellow-500/20 p-2 rounded-full">
           <ShieldCheck className="text-yellow-500 w-6 h-6" />
         </div>
-        <div>
+        <div className="hidden md:block md:opacity-100 md:group-hover:opacity-100 transition-opacity">
           <h1 className="text-xl font-bold text-white tracking-wide">Escrutinio Carnaval 2026</h1>
           <p className="text-xs text-slate-400">Paso de los Libres • desarrolloweb-pdl</p>
         </div>

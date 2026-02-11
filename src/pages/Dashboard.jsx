@@ -28,10 +28,10 @@ const Dashboard = () => {
       
       {/* Header */}
       <div className="text-center mb-8 pt-20">
-        <h2 className="text-5xl font-bold bg-gradient-to-r from-yellow-200 to-yellow-500 bg-clip-text text-transparent mb-2">
+        <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-yellow-200 to-yellow-500 bg-clip-text text-transparent mb-2">
           Carnaval 2026 - En Vivo
         </h2>
-        <p className="text-slate-400 text-lg">Noche 1 • Sambódromo Municipal de Paso de los Libres</p>
+        <p className="hidden md:block text-slate-400 text-lg">Noche 1 • Sambódromo Municipal de Paso de los Libres</p>
       </div>
 
       {/* Video Grande con Overlay de Puntajes */}
