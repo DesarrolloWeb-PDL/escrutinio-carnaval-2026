@@ -23,4 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 
+# Prisma
 /src/generated/prisma
+.env
+prisma.config.ts
