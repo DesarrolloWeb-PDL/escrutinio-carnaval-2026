@@ -1,8 +1,14 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import 'dotenv/config';
 
+// Para Prisma 7 necesitamos pasar la accelerateUrl si usamos Prisma Accelerate
 const prisma = new PrismaClient({
   log: ['query', 'info', 'warn', 'error'],
+  // Usar la URL de Accelerate si está disponible
+  ...(process.env.PRISMA_ACCELERATE_URL && {
+    accelerateUrl: process.env.PRISMA_ACCELERATE_URL
+  })
 });
 
 async function main() {
