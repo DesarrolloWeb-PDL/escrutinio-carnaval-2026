@@ -5,9 +5,6 @@ const { PrismaClient } = pkg;
 const prismaClientSingleton = () => {
   return new PrismaClient({
     log: ['error', 'warn'],
-    accelerateUrl: process.env.DATABASE_URL?.startsWith('prisma+postgres') 
-      ? process.env.DATABASE_URL 
-      : undefined,
   });
 };
 
