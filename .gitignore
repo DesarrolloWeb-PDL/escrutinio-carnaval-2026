@@ -7,9 +7,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
-dist
-dist-ssr
+
+# Local files
 *.local
 
 # Editor directories and files
@@ -27,3 +28,6 @@ dist-ssr
 /src/generated/prisma
 .env
 prisma.config.ts
+
+# Vercel
+.vercel

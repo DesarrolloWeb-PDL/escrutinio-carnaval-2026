@@ -23,7 +23,7 @@ const PrivateRoute = ({ children, allowedRoles }) => {
 
 const AppContent = () => {
     return (
-        <Router basename="/escrutinio-carnaval-2026">
+        <Router>
              <Navbar />
              <Routes>
                  <Route path="/login" element={<Login />} />
