@@ -1,7 +1,6 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import prisma from './api/prisma.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,13 +23,15 @@ app.get('/api/health', (req, res) => {
 // Obtener usuarios
 app.get('/api/users', async (req, res) => {
   try {
+    // Lazy load Prisma para evitar errores en inicialización
+    const { default: prisma } = await import('./api/prisma.js');
     const users = await prisma.user.findMany({
       select: { id: true, name: true, email: true, role: true }
     });
     res.json(users);
   } catch (error) {
     console.error('Error fetching users:', error);
-    res.status(500).json({ error: 'Error al obtener usuarios' });
+    res.status(500).json({ error: 'Error al obtener usuarios', details: error.message });
   }
 });
 
@@ -38,13 +39,14 @@ app.get('/api/users', async (req, res) => {
 app.post('/api/users', async (req, res) => {
   const { email, name, password, role } = req.body;
   try {
+    const { default: prisma } = await import('./api/prisma.js');
     const user = await prisma.user.create({
       data: { email, name, password, role }
     });
     res.json(user);
   } catch (error) {
      console.error('Error creating user:', error);
-     res.status(500).json({ error: 'Error creando usuario' });
+     res.status(500).json({ error: 'Error creando usuario', details: error.message });
   }
 });
 
@@ -54,12 +56,24 @@ app.get(/.*/,  (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// ==================== ERROR HANDLER ====================
+app.use((err, req, res, next) => {
+  console.error('Error general:', err);
+  res.status(500).json({ error: 'Error interno del servidor', details: err.message });
+});
+
 // ==================== START SERVER ====================
-app.listen(PORT, () => {
-  console.log(`
+// Solo iniciar servidor si no estamos en Vercel (serverless)
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`
 ╔════════════════════════════════════════════════════════╗
 ║  🎭 Escrutinio Carnaval 2026                          ║
 ║  🚀 Servidor corriendo en http://localhost:${PORT}     ║
 ╚════════════════════════════════════════════════════════╝
-  `);
-});
+    `);
+  });
+}
+
+// Exportar para Vercel
+export default app;
