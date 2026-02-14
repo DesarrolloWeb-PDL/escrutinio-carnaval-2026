@@ -7,13 +7,16 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "node server.js",
+    "vercel-build": "vite build"
   },
   "prisma": {
     "seed": "node prisma/seed.js"
   },
   "dependencies": {
     "clsx": "^2.1.0",
+    "express": "^5.2.1",
     "framer-motion": "^11.0.8",
     "lucide-react": "^0.344.0",
     "react": "^18.2.0",
