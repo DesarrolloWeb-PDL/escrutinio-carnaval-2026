@@ -27,7 +27,6 @@ node_modules
 # Prisma
 /src/generated/prisma
 .env
-prisma.config.ts
 
 # Vercel
 .vercel
