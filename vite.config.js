@@ -18,6 +18,9 @@ export default defineConfig({
   // Solo usa subdirectorio para GitHub Pages, en Vercel usa root
   base: process.env.VITE_BASE_PATH || '/',
   build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: false,
     rollupOptions: {
       output: {
         manualChunks: undefined,
